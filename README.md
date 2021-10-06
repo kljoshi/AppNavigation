@@ -33,7 +33,7 @@ android:name=“com.example.android.location_of_fragment”
 android:layout_width=“match_parent” 
 android:layout_height=“match_parent”/>
 ```
--------------------------------------
+----
 ### Navigation
 #### Navigate:
 We can navigate between different activities and fragments and activity. The previous activities are arranged in stack which is known as back stack. System back key will pop the top of the stack. Fragment Back Stack works the same, the fragments are arranged in stack as well.
