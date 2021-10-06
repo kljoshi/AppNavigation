@@ -195,16 +195,21 @@ Note after using Safe Args you can use nav directions. It’s the self generated
 ### Intents and sharing
 An intent indicates intention of your app. It’s a description of something that the app wants an activity to perform.
 There are two types of intent:
-a. Explicit  - An explicit intent is used to launch an activity using the name of the target activity class, and they are typically only used to launch other activities within your application.
+1.Explicit  - An explicit intent is used to launch an activity using the name of the target activity class, and they are typically only used to launch other activities within your application.
 The navigation component does this for you when you navigate to other activities in the navigation graph.
 
-b. Implicit: Implicit intent provide an abstract description of the operation to be performed, and they most often are used to launch activities that are exposed by other applications. 
+2.Implicit: Implicit intent provide an abstract description of the operation to be performed, and they most often are used to launch activities that are exposed by other applications. 
+
 When multiple Android apps can handle the same implicit intent, Android will pop up a chooser with the list of compatible apps so that the user can select the desired on to handle the request. 
+
 Implicit intents are important because they allow an app to request something from another app without having to know anything about that other app. 
 Each implicit intent must have an action. These actions are completely different than the actions that we have in the navigation graph. Actions are used in intents to describe the type of thing that is to be done. Common actions are defined in the intent class such as view, edit, or dial. 
+
 In addition with action implicit intents have a category and datatype to further describe the operation. Categories aren’t always used,  but are used to further disambiguate the action. An example of how categories are used is in the main entry point action. The categories used along with the main entry point to launch an available music player or a mapping application. 
+
 Finally, implicit intents can include a datatype such as text or a JPEG image, which allows application to be chosen based on the data types they can accept.
 All activities must be registered in the Android manifest to be launched. Activities that are only launched explicitly can be declared with just an activity tag, while implicitly launched activities require an IntentFilter. 
+
 An IntentFilter is used to exposed that your activity can respond to an implicit intent with a certain action, category, or type. 
 For android launcher to start an activity the activity needs to be registered in the Android manifest with the correct IntentFilter. 
 We can see what this correct IntentFilter looks like in the MainActivity of our app. The IntentFilter registers our MainActivity with Android as an entry point for out application with the MAIN action, designed to be used by the application launcher because of the LAUNCHER category. If an activity in the app didn’t have this IntentFilter, the app wouldn’t appear in the launcher. 
