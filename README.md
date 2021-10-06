@@ -63,9 +63,11 @@ dependencies {
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
 } 
 ```
-2. Add the navigation graph to the project right-click on the res directory and select New > Android resource file. Select Navigation as the resource type and give it  the file name of navigation.
+2. Add the navigation graph to the project, right-click on the res directory and select **_New > Android resource_** file. Select Navigation as the resource type and give it the file name.
 
-3. Add the Navigation Host Fragment in the Activity Layout  //code <!-- The NavHostFragment within the activity_main layout -->
+3. Add the Navigation Host Fragment in the Activity Layout 
+```
+<!-- The NavHostFragment within the activity_main layout -->
 <fragment
    android:id="@+id/myNavHostFragment"
    android:name="androidx.navigation.fragment.NavHostFragment"
@@ -73,15 +75,19 @@ dependencies {
    android:layout_height="match_parent"
    app:navGraph="@navigation/navigation"
    app:defaultNavHost="true"
-   />  4. Add the fragments to the Navigation Graph 
-Within the navigation editor, click the add button. A list of fragments and activities will drop down. Add the start destination fragment first and the add others.
+   />
+   ```
+4. Add the fragments to the Navigation Graph within the navigation editor, click the add button. A list of fragments and activities will drop down. Add the start destination fragment first and the add others.
 
-5. Connecting the Fragments with an Action Begin by hovering over the titleFragment. You’ll see a circular point on the right side of the fragment view. Click on the connection point and drag it to the other fragment to add an Action that connects the two fragments. 
-6. To add the action to a button  // code //The complete onClickListener with Navigation
+5. Connecting the Fragments with an Action -> Begin by hovering over the first fragment. You’ll see a circular point on the right side of the fragment view. Click on the connection point and drag it to the other fragment to add an Action that connects the two fragments. 
+
+6. To add the action to a button 
+```
+//The complete onClickListener with Navigation
 binding.playButton.setOnClickListener { view: View ->
         view.findNavController().navigate(R.id.action_titleFragment_to_gameFragment)
 }
-
+```
 
 ### Creating different menu
 ### Using implicit intent
