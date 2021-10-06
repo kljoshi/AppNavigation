@@ -117,6 +117,7 @@ Override fun onSupportNavigateUp(): Boolean {
  return navController.navigateUp()
 } 
 ```
+----
 ### Adding a Overflow Menu:
 OverFlow menu appears on the action bar.
 
@@ -145,36 +146,67 @@ override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 We did not have to create an action connecting one fragment to another fragment inorder to navigate. Menus are often used to navigate from more than one destination, and there is no way to specify different menu actions for each destination to navigate from. So when we use menus, we usually navigate directly to destination rather than use actions. 
 
 ----
-Adding Safe Arugments 
+### Adding Safe Arugments
 
 Fragments contain Arugments in the form of an Android bundle, which is a key value store. A key value store, also know as a dictionary or associate array, is a data structure we use a unique key such as string to fetch an associated value. There are limited types that can be stored as value in a bundle. Primitive types such as char, int and float, along with various types of arrays, char sequence and a few data classes such as array list.  
 
 To pass parameteres from fragment A to fragment B, you create an instance of the argument bundle class in fragment A. Then set your argument data in the bundle by pushing in associated key string in value pairs. Finally, you set the data into the Arugments. 
 
-// code 
+```
 Val argBundle = Bundle()
 argBundle.putString(NAME_KEY_STRING, “content”)
 argBundle.putInt(SERIAL_KEY_INT, 42)
 
 Val fragment = FragmentB()
 fragment.arguments = argBundle
-
+```
 There are few ways in which the above code might generate bugs. Types. It’s up to the developer to make sure that the types of arguments match. There is no way to guarantee that what you pass into fragment A, is what the recipient asks for on the other end. 
 
-Fortunately, navigation includes a feature called Safe Args that can help. Safe Args is a Gradle plugin that generates code to help guarantee that the arguments on both sides match up, while also simplifying argument passing.   In order to use Safe args:
+Fortunately, navigation includes a feature called Safe Args that can help. Safe Args is a Gradle plugin that generates code to help guarantee that the arguments on both sides match up, while also simplifying argument passing. In order to use Safe args:
 Steps:
-1. First add the navigation Safe Args Gradle plugin dependency into the project Gradle file.  //code  dependencies {
+1. First add the navigation Safe Args Gradle plugin dependency into the project Gradle file. 
+```
+dependencies {
    …
-"android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
+  "android.arch.navigation:navigation-safe-args-gradle-plugin:$version_navigation"
 
    // NOTE: Do not place your application dependencies here; they belong
    // in the individual module build.gradle files
 }
-
-2. At the top of the app gradle file after all of the other plugins, you can add the apply plugin statement with the AndroidX navigation safe args plugin, and now you can start using safe arguments.  //code  // Adding the apply plugin statement for safeargs
+```
+2. At the top of the app gradle file after all of the other plugins, you can add the apply plugin statement with the AndroidX navigation safe args plugin, and now you can start using safe arguments.
+```
+// Adding the apply plugin statement for safeargs
 apply plugin: 'kotlin-kapt'
-apply plugin: 'androidx.navigation.safeargs' 
+apply plugin: 'androidx.navigation.safeargs'
+```
 3. Do a clean built. 
-4. Now use the actions, generated with safe args dependency within the fragment. And add the arguments required to pass as parameters. You can add the arguments in the Nav Graph of the fragment you want to pass the data to.   // code  view.findNavController().navigate(FragmentDirections.actionFragToAnotherFrag(parm1, parm2)) 
-Within the fragment you want to get the data in we use the generated fragment args class to get the arguments from the argument bundle. //code val args = FragmentArgs.fromBundle(arguments)  Note after using you can use nav directions. It’s the self generated action object that is created starting with the name of the FragmentDirection.action.
-### Using implicit intent
+4. Now use the actions, generated with safe args dependency within the fragment. And add the arguments required to pass as parameters. You can add the arguments in the Nav Graph of the fragment you want to pass the data to.  
+```
+view.findNavController().navigate(FragmentDirections.actionFragToAnotherFrag(parm1, parm2))
+```
+Within the fragment you want to get the data in we use the generated fragment args class to get the arguments from the argument bundle.
+```
+val args = FragmentArgs.fromBundle(arguments)
+```
+Note after using Safe Args you can use nav directions. It’s the self generated action object that is created starting with the name of the **_Fragment_Name_Direction.action._**.
+
+----
+### Intents and sharing
+An intent indicates intention of your app. It’s a description of something that the app wants an activity to perform.
+There are two types of intent:
+a. Explicit  - An explicit intent is used to launch an activity using the name of the target activity class, and they are typically only used to launch other activities within your application.
+The navigation component does this for you when you navigate to other activities in the navigation graph.
+
+b. Implicit: Implicit intent provide an abstract description of the operation to be performed, and they most often are used to launch activities that are exposed by other applications. 
+When multiple Android apps can handle the same implicit intent, Android will pop up a chooser with the list of compatible apps so that the user can select the desired on to handle the request. 
+Implicit intents are important because they allow an app to request something from another app without having to know anything about that other app. 
+Each implicit intent must have an action. These actions are completely different than the actions that we have in the navigation graph. Actions are used in intents to describe the type of thing that is to be done. Common actions are defined in the intent class such as view, edit, or dial. 
+In addition with action implicit intents have a category and datatype to further describe the operation. Categories aren’t always used,  but are used to further disambiguate the action. An example of how categories are used is in the main entry point action. The categories used along with the main entry point to launch an available music player or a mapping application. 
+Finally, implicit intents can include a datatype such as text or a JPEG image, which allows application to be chosen based on the data types they can accept.
+All activities must be registered in the Android manifest to be launched. Activities that are only launched explicitly can be declared with just an activity tag, while implicitly launched activities require an IntentFilter. 
+An IntentFilter is used to exposed that your activity can respond to an implicit intent with a certain action, category, or type. 
+For android launcher to start an activity the activity needs to be registered in the Android manifest with the correct IntentFilter. 
+We can see what this correct IntentFilter looks like in the MainActivity of our app. The IntentFilter registers our MainActivity with Android as an entry point for out application with the MAIN action, designed to be used by the application launcher because of the LAUNCHER category. If an activity in the app didn’t have this IntentFilter, the app wouldn’t appear in the launcher. 
+
+----
