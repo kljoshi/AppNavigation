@@ -214,4 +214,82 @@ An IntentFilter is used to exposed that your activity can respond to an implicit
 For android launcher to start an activity the activity needs to be registered in the Android manifest with the correct IntentFilter. 
 We can see what this correct IntentFilter looks like in the MainActivity of our app. The IntentFilter registers our MainActivity with Android as an entry point for out application with the MAIN action, designed to be used by the application launcher because of the LAUNCHER category. If an activity in the app didn’t have this IntentFilter, the app wouldn’t appear in the launcher. 
 
+#### How To user Implicit Intent:
+Steps:
+1. Create button on the action bar like before using the **_setHasOptionMenu(true)_** and overriding the **_onCreateOptionsMenu()_**.
+
+2. Create share intent method using the type of action and type of data to share. Which will show list of all the app that will work for this implicit intent to work. Then we can add what is known as the intent extra. Intent extra are a key value data structure similar to what we use in the bundle for fragments arguments. They’re used to provide arguments for the intent. Some arguments types such as text have predefined keys. Since we are going to share a string, we’ll add the string with the predefined intent **_EXTRA_TEXT_** key.
+```
+val shareIntent = Intent(Intent.ACTION_SEND)
+shareIntent.setType(“text/plain”).putExtra(Intent.EXTRA_TEXT, getString(R.string.share_success_text, args.numCorrect, args.numQuestions))
+```
+
+3. Override the **_onOptionItemSelected()_** method and add logic to tell the app what needs to be done when the option is selected.
+Since text sharing intent is so common there is also a easy way to use it. By using the ShareCompat. 
+```
+private fun getShareIntent(): Intent {
+  var args = FragmentArgs.fromBundle(arguments)
+  return ShareCompat.IntentBuilder.from(activity).setText(getString(R.string.something).setType(“text/plain”).intent
+}
+```
+4. We also need to account for situation where there are no apps that can perform the intended action. In that case we need to handle this exception otherwise our app will crash. 
+
+5. In our case we will hide the share menu option if we can’t share. In **_onCreateOptionsMenu()_** method we can check to see if the intent will resolve to an activity. We can use the package manager to know about every activity that is registered in the AndroidManifest across every application, so it can be used to see if our implicit intent will resolve to something.
+```
+if (null == getShareIntent().resolveActivity(activity!!.packageManager)){
+  menu?.findItem(R.id.share)?.setVisible(false)
+  }
+```
 ----
+
+### Adding the Navigation drawer
+The navigation drawer is a panel that slides out from the edge of the screen, and it typically contains header and a menu. It’s hidden when not in use on phone sized devices, and appears when the user swipes a finger from the starting edge of the screen, or when at the starting destination of the app, the user touches the drawer icon, also known as the hamburger icon in the action bar. 
+
+The navigation drawer is part of the material library, a library used to implement patterns that are part of Google’s material design language. 
+
+Steps:
+1. Include its dependency into app gradle file. 
+```com.google.android.material:material:$supportlibVersion”```
+
+2. Add the fragment you want to add on the drawer in the navigation graph. 
+
+3. The navigation drawer is based upon a menu resource. So we need to create a new nav drawer menu. And add menu items along with id, title, and icon to display. Add as many item as needed.
+
+4. Go to **_mainActivity_** layout and implement the drawer layout as the outer container of the main layout in the activity. 
+``` <androidx.drawerlayout.widget.DrawerLayout
+android:id=“@+id/drawerLayout”
+android:layout_width=“match_parent”
+android:layout_height=“match_parent”>
+```
+
+5. Just before the end of our drawer layout, we add the navigation view from the material library, which gives our navigation drawer the material look and feel. The tag contains an attribute that points to the nav drawer menu we just created.
+```<com.google.android.material.navigation.NavigationView
+android:id=“@+id/navView”
+android:layout_width=“wrap_content”
+android:layout_height=“match_parent”
+android:layout_gravity=“start”
+app:menu=“@menu/navdrawer_menu”/>
+```
+6. On the **_MainActivity_** file declare a lateinit drawer layout variable, and initialize it from the activity main binding.
+```
+lateinit var drawerLayout: DrawerLayout
+drawerLayout = binding.drawerLayout
+```
+
+7.  When we set up the action bar with the navController, We now need to include the drawer layout as the third parameter to the method. 
+```NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)```
+We also need to setup the NavigationUI to know about the navigation view.
+```NavigationUI.setupWithNavController(binding.navView, navController)```
+and in our onSupportNavigateUp activity method, we need to use **_NavigationUi.navigateUp_** with the drawer layout as a parameter instead of navController navigateUp. 
+```
+override fun onSupportNavigateUp(): Boolean { 
+  val navController = this.findNavController(R.id.myNavHostFragment)
+  return NavigationUI.navigateUp(drawerLayout, navController)
+}
+```
+This is so the navigation UI can replace the Up button with the navigation drawer button when we get to the start destination. 
+  
+9. To create a header for the Navigation drawer we just need to create an xml layout and add  it in the NavigationView tag with ```app:headerLayout=@layout/nav_header``` tag.
+----
+
+
