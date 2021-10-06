@@ -16,8 +16,7 @@ This is the thrid android project in [Udacity: Developing Android Apps with Kotl
 ## Highlight for lesson 3:
 ### Fragments
 Activity contains the fragment. Fragment needs a layout as well, on the **_onCreateView_** method. We can use
-```DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-``` 
+```DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)``` 
 to set the layout in Activity. But setContentView does not work for Fragment. Instead we will be using “DataBindingUtil.inflate”. 
 ### Navigation Component
 ### Creating different menu
