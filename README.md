@@ -1,3 +1,19 @@
 # AppNavigation
 
 ## Lesson 3: App Navigation
+This is the thrid android project in [Udacity: Developing Android Apps with Kotlin course.](https://classroom.udacity.com/courses/ud9012)
+- Basic of creating a fragment 
+- Switching from one fragment to another using navigation actions 
+- Navigation component using navigation graph
+- Conditional navigation between different fragments 
+- Back stack manipulation using up button
+- Creating overflow menu 
+- adding safe arguments 
+- using intents and sharing - by creating share button on the action bar
+- adding navigation drawer 
+- using navigation listeners 
+
+## Highlight for lesson 3:
+### Navigation Component
+### Creating different menu
+### Using implicit intent
