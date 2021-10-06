@@ -290,6 +290,3 @@ override fun onSupportNavigateUp(): Boolean {
 This is so the navigation UI can replace the Up button with the navigation drawer button when we get to the start destination. 
   
 9. To create a header for the Navigation drawer we just need to create an xml layout and add  it in the NavigationView tag with ```app:headerLayout=@layout/nav_header``` tag.
-----
-
-
