@@ -290,3 +290,19 @@ override fun onSupportNavigateUp(): Boolean {
 This is so the navigation UI can replace the Up button with the navigation drawer button when we get to the start destination. 
   
 9. To create a header for the Navigation drawer we just need to create an xml layout and add  it in the NavigationView tag with ```app:headerLayout=@layout/nav_header``` tag.
+----
+### Navigation Listeners
+For the navigation drawer, you can swipe from the starting side and the drawer will appear. Now the button is only visible at the start destination, but the swipe works anywhere within the app. You might want to prevent the drawer from working in certain places. We can will be using navigation listener to demonstrate this. 
+
+Navigation listeners are an interface that contains a single method that gets called every time we navigate. They allow us to react and do something during navigation, or in our case, block the drawer from coming out after navigation away from the start destination.
+Steps:
+1. Create a navigation listener within onCreate, it gets called whenever the destination changes. We get back the destination and we could use this for all custom functionality.
+```
+navController.addOnDestinationChangedListener { nc: NavController, nd: NavDestination, args: Bundle? ->
+   if (nd.id == nc.graph.startDestination) {
+       drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+   } else {
+       drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+   }
+}
+```
