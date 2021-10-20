@@ -142,6 +142,7 @@ override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 }
 ```
 We did not have to create an action connecting one fragment to another fragment inorder to navigate. Menus are often used to navigate from more than one destination, and there is no way to specify different menu actions for each destination to navigate from. So when we use menus, we usally naviagte directly to destination rather than use actions. 
+
 ----
 ### Adding Safe Arugments
 Fragments contain Arugments in the form of an Android bundle, which is a key value store. A key value store, also know as a dictionary or associate array, is a data structure we use a unique key such as string to fetch an associated value. There are limited types that can be stored as value in a bundle. Primitive types such as char, int and float, along with various types of arrays, char sequence and a few data classes such as array list.
