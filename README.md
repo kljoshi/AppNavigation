@@ -1,4 +1,4 @@
-# AppNavigation
+# AppNavigation - Lesson 3
 
 ## Lesson 3: App Navigation
 This is the thrid android project in [Udacity: Developing Android Apps with Kotlin course.](https://classroom.udacity.com/courses/ud9012)
